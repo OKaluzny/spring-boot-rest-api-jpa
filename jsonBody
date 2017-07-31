@@ -1,0 +1,29 @@
+{
+    "id": 70,
+    "created": "28-07-2017 10:07:20",
+    "modified": "28-07-2017 10:15:38",
+    "name": "Football clubs. Future.",
+    "author": {
+        "id": 20,
+        "created": "28-07-2017 09:38:51",
+        "modified": "31-07-2017 12:56:33",
+        "bookCount": 2,
+        "name": "Tom Hacksley",
+        "address": {
+            "id": 100,
+            "created": "31-07-2017 12:00:19",
+            "modified": "31-07-2017 12:09:41",
+            "country": "Canada",
+            "city": "Vancuver"
+        }
+    },
+    "publisher": {
+        "id": 91,
+        "created": "28-07-2017 10:14:17",
+        "modified": "28-07-2017 10:14:17",
+        "bookCount": 1,
+        "name": "Publisher house 'Toronto'"
+    },
+    "year": 2000,
+    "pages": 894
+}
