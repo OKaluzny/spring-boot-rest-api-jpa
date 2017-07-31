@@ -90,6 +90,7 @@ public class AuthorRestController {
         currentAuthor.setModified(author.getModified());
         currentAuthor.setName(author.getName());
         currentAuthor.setBooks(author.getBooks());
+        currentAuthor.setAddress(author.getAddress());
 
         AuthorService.update(currentAuthor);
         return new ResponseEntity<>(currentAuthor, HttpStatus.OK);
