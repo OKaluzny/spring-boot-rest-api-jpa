@@ -1,12 +1,12 @@
 package com.kaluzny.author;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kaluzny.address.Address;
 import com.kaluzny.book.Book;
 import com.kaluzny.domain.BaseEntity;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,6 +16,7 @@ public class Author extends BaseEntity {
     private int bookCount;
     private String name;
     private List<Book> books; //Books that author has written
+    private Address address;
 
     @Formula("(" +
             "SELECT count(books.id) " +
@@ -47,14 +48,15 @@ public class Author extends BaseEntity {
     public void setBooks(List<Book> books) {
         this.books = books;
     }
+    @OneToOne
+    @JoinColumn(name = "address_fk")
+    public Address getAddress() {
+        return address;
+    }
 
-    /*public void addBook(Book book) {
-        if (books == null) {
-            books = new ArrayList<>();
-        }
-        books.add(book);
-        book.setAuthor(this);
-    }*/
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     @Override
     public String toString() {
