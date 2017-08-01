@@ -1,12 +1,14 @@
 package com.kaluzny.publisher;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kaluzny.author.Author;
 import com.kaluzny.book.Book;
 import com.kaluzny.domain.BaseEntity;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "PUBLISHERS")
@@ -15,6 +17,7 @@ public class Publisher extends BaseEntity {
     private int bookCount;
     private String name;
     private List<Book> books;
+    private Set<Author> author;
 
     @Formula("(" +
             "SELECT count(books.id) " +
@@ -45,5 +48,15 @@ public class Publisher extends BaseEntity {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "publisher")
+    public Set<Author> getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Set<Author> author) {
+        this.author = author;
     }
 }
