@@ -35,7 +35,7 @@ public abstract class BaseEntity {
         this.created = created;
     }
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss", timezone = "Europe/Ukraine")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "MODIFIED_DATE")
     public Date getModified() {
