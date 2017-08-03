@@ -1,13 +1,14 @@
 package com.kaluzny.book;
 
-import com.kaluzny.domain.BaseEntity;
 import com.kaluzny.author.Author;
+import com.kaluzny.domain.BaseEntity;
 import com.kaluzny.publisher.Publisher;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "BOOKS")
+@AttributeOverride(name = "id", column = @Column(name = "book_id"))
 public class Book extends BaseEntity {
 
     private String name;
@@ -26,7 +27,7 @@ public class Book extends BaseEntity {
     }
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "author_fk") //, nullable = false
+    @JoinColumn(name = "author_fk") //, nullable = false @OrderBy
     public Author getAuthor() {
         return author;
     }
@@ -44,6 +45,7 @@ public class Book extends BaseEntity {
     public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
     }
+
     @Column(name = "publishing_year")
     public int getYear() {
         return year;

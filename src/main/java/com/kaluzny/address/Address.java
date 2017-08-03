@@ -4,13 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kaluzny.author.Author;
 import com.kaluzny.domain.BaseEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "ADDRESSES")
+@AttributeOverride(name = "id", column = @Column(name = "address_id"))
 public class Address extends BaseEntity {
 
     private String country;

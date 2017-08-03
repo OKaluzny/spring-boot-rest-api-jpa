@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "AUTHORS")
-@Access(AccessType.PROPERTY)
+@AttributeOverride(name = "id", column = @Column(name = "author_id"))
 public class Author extends BaseEntity {
 
     private int bookCount;
@@ -22,10 +22,8 @@ public class Author extends BaseEntity {
     private Address address;
     private Set<Publisher> publisher;
 
-    @Formula("(" +
-            "SELECT count(books.id) " +
-            "FROM BOOKS books " +
-            "WHERE books.author_fk = id)")
+    // With @formula don't create field in db...when add @attribute
+    @Formula("(SELECT count(b.book_id) FROM BOOKS b WHERE b.author_fk = author_id)")
     public int getBookCount() {
         return bookCount;
     }
@@ -44,7 +42,7 @@ public class Author extends BaseEntity {
     }
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false, mappedBy = "author")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author")
     public List<Book> getBooks() {
         return books;
     }

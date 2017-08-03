@@ -12,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "PUBLISHERS")
+@AttributeOverride(name = "id", column = @Column(name = "publisher_id"))
 public class Publisher extends BaseEntity {
 
     private int bookCount;
@@ -19,10 +20,7 @@ public class Publisher extends BaseEntity {
     private List<Book> books;
     private Set<Author> author;
 
-    @Formula("(" +
-            "SELECT count(books.id) " +
-            "FROM BOOKS books " +
-            "WHERE books.publisher_fk = id)")
+    @Formula("(SELECT count(b.book_id) FROM BOOKS b WHERE b.publisher_fk = publisher_id)")
     public int getBookCount() {
         return bookCount;
     }
@@ -41,7 +39,7 @@ public class Publisher extends BaseEntity {
     }
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false, mappedBy = "publisher")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "publisher")
     public List<Book> getBooks() {
         return books;
     }
@@ -58,5 +56,38 @@ public class Publisher extends BaseEntity {
 
     public void setAuthor(Set<Author> author) {
         this.author = author;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Publisher)) return false;
+
+        Publisher publisher = (Publisher) o;
+
+        if (bookCount != publisher.bookCount) return false;
+        if (!name.equals(publisher.name)) return false;
+        if (!books.equals(publisher.books)) return false;
+        return author.equals(publisher.author);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = bookCount;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + books.hashCode();
+        result = 31 * result + author.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Publisher{" +
+                "bookCount=" + bookCount +
+                ", name='" + name + '\'' +
+                ", books=" + books +
+                ", author=" + author +
+                '}';
     }
 }
