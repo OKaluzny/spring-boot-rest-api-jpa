@@ -14,7 +14,7 @@ public abstract class BaseEntity {
     private Date modified = new Date();
 
     @Id
-    @Column(name = "ID", insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public int getId() {
         return id;
