@@ -24,8 +24,8 @@ public class AuthorRestController {
     private AuthorService authorService;
 
     @Inject
-    public AuthorRestController(AuthorService AuthorService) {
-        this.authorService = AuthorService;
+    public AuthorRestController(AuthorService authorService) {
+        this.authorService = authorService;
     }
 
     /* Create a author */
