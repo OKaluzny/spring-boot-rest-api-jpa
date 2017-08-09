@@ -21,11 +21,11 @@ public class AuthorRestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorRestController.class);
 
-    private AuthorService AuthorService;
+    private AuthorService authorService;
 
     @Inject
     public AuthorRestController(AuthorService AuthorService) {
-        this.AuthorService = AuthorService;
+        this.authorService = AuthorService;
     }
 
     /* Create a author */
@@ -34,11 +34,11 @@ public class AuthorRestController {
             method = RequestMethod.POST)
     public ResponseEntity<Author> createAuthor(@RequestBody Author author, UriComponentsBuilder ucBuilder) {
         LOGGER.debug(">>> Creating author with id: " + author.getId());
-        if (AuthorService.isExist(author)) {
+        if (authorService.isExist(author)) {
             LOGGER.debug("An author with name " + author.getId() + "exist.");
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        AuthorService.save(author);
+        authorService.save(author);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("authors/{id}").buildAndExpand(author.getId()).toUri());
         return new ResponseEntity<>(author, headers, HttpStatus.CREATED);
@@ -51,7 +51,7 @@ public class AuthorRestController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Author> getAuthor(@PathVariable("id") int id) {
         LOGGER.debug("Fetching author with id: " + id);
-        Author author = AuthorService.findById(id);
+        Author author = authorService.findById(id);
         if (author == null) {
             LOGGER.debug("Author with id: " + id + ", not found!");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -66,7 +66,7 @@ public class AuthorRestController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Author>> listAllAuthors() {
         LOGGER.debug("Received request to list all authors");
-        List<Author> authors = AuthorService.findAll();
+        List<Author> authors = authorService.findAll();
         if (authors.isEmpty()) {
             LOGGER.debug("authors do not have.");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -81,7 +81,7 @@ public class AuthorRestController {
     public ResponseEntity<Author> updateFromDB(@PathVariable("id") int id,
                                                @RequestBody Author author) {
         LOGGER.debug(">>> Updating author with id: " + id);
-        Author currentAuthor = AuthorService.findById(id);
+        Author currentAuthor = authorService.findById(id);
 
         if (currentAuthor == null) {
             LOGGER.debug("<<< Authors with id: " + id + ", not found!");
@@ -92,7 +92,7 @@ public class AuthorRestController {
         currentAuthor.setBooks(author.getBooks());
         currentAuthor.setAddress(author.getAddress());
 
-        AuthorService.update(currentAuthor);
+        authorService.update(currentAuthor);
         return new ResponseEntity<>(currentAuthor, HttpStatus.OK);
     }
 
@@ -103,13 +103,13 @@ public class AuthorRestController {
     public ResponseEntity<Author> deleteAuthorFromDB(@PathVariable("id") int id) {
         LOGGER.debug("Fetching & Deleting author with id: " + id + " is successfully removed from database!");
 
-        Author author = AuthorService.findById(id);
+        Author author = authorService.findById(id);
         if (author == null) {
             LOGGER.debug("Unable to delete. Author with id: " + id + ", not found!");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        AuthorService.delete(id);
+        authorService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -118,7 +118,7 @@ public class AuthorRestController {
             value = "authors",
             method = RequestMethod.DELETE)
     public ResponseEntity<Author> deleteAllAuthors() {
-        AuthorService.deleteAll();
+        authorService.deleteAll();
         LOGGER.debug("Removed all authors from database!");
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
